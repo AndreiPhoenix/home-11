@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Прогресс-бар</title>
+  <style>
+    #progress-container {
+      width: 300px;
+      height: 30px;
+      border: 1px solid #ccc;
+      margin: 20px;
+    }
+    
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #4CAF50;
+      transition: width 0.5s;
+    }
+    
+    #message {
+      margin: 20px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+  <div id="message">Выполнение задачи...</div>
+
+  <script>
+    function executeTask() {
+      return new Promise(resolve => {
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 20;
+          document.getElementById('progress-bar').style.width = `${progress}%`;
+          
+          if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(resolve, 500); // Даем анимации завершиться
+          }
+        }, 1000);
+      });
+    }
+
+    executeTask()
+      .then(() => {
+        document.getElementById('message').textContent = 'Готово!';
+      });
+  </script>
+</body>
+</html>
