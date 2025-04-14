@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Игра на реакцию</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    #game-button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ccc;
+      color: #666;
+      border: none;
+      border-radius: 5px;
+      cursor: not-allowed;
+      margin: 20px;
+    }
+    
+    #game-button.active {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    
+    #result {
+      font-size: 24px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Проверка скорости реакции</h1>
+  <p id="instruction">Нажмите кнопку через 3 секунды</p>
+  <button id="game-button" disabled>Нажми меня</button>
+  <div id="result"></div>
+
+  <script>
+    const button = document.getElementById('game-button');
+    const resultDiv = document.getElementById('result');
+    const instruction = document.getElementById('instruction');
+    
+    let startTime;
+    let reactionTime;
+    let timeoutId;
+    let delayTime;
+    
+    function startGame() {
+      // Сбрасываем состояние
+      button.disabled = true;
+      button.className = '';
+      resultDiv.textContent = '';
+      instruction.textContent = 'Нажмите кнопку через 3 секунды';
+      
+      // Случайная задержка от 1 до 5 секунд
+      delayTime = 1000 + Math.random() * 4000;
+      
+      // Устанавливаем таймер
+      timeoutId = setTimeout(() => {
+        button.disabled = false;
+        button.classList.add('active');
+        startTime = Date.now();
+        instruction.textContent = 'Жмите сейчас!';
+      }, delayTime);
+    }
+    
+    button.addEventListener('click', () => {
+      if (!button.disabled) {
+        reactionTime = Date.now() - startTime;
+        resultDiv.textContent = `Ваша реакция: ${reactionTime} мс`;
+        button.disabled = true;
+        button.classList.remove('active');
+        
+        // Перезапускаем игру через 3 секунды
+        setTimeout(startGame, 3000);
+      }
+    });
+    
+    // Начинаем игру
+    startGame();
+  </script>
+</body>
+</html>
